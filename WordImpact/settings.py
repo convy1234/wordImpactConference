@@ -16,7 +16,7 @@ import dj_database_url
 from decouple import config, Csv
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 MAIN_DOMAIN = config('MAIN_DOMAIN')
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 DEFAULT_SCHEME = config("DEFAULT_SCHEME", "http" if DEBUG else "https")
@@ -36,8 +36,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&07+@hosv0=j#y3p^k^t_61w1h_awfj(t&)h(9646wx@&=#fqq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = ["*"]  # dev only
 
 
@@ -167,6 +165,9 @@ STORAGES = {
         "BACKEND": "WordImpact.storage_backends.StaticStorage"
     }
 }
+
+DEBUG=True
+
 
 
 CSRF_TRUSTED_ORIGINS = [
