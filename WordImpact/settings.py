@@ -13,6 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import dj_database_url
+from decouple import config, Csv
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = config('DEBUG', cast=bool)
+MAIN_DOMAIN = config('MAIN_DOMAIN')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+DEFAULT_SCHEME = config("DEFAULT_SCHEME", "http" if DEBUG else "https")
+SITE_BASE_URL = f"{DEFAULT_SCHEME}://{MAIN_DOMAIN}"
+
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,7 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "registrations",  # our app
-
 ]
 
 MIDDLEWARE = [
@@ -119,17 +128,89 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# Static files directory during development
+STATICFILES_DIRS = [BASE_DIR ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),  # if you also have a global static folder
+STATICFILES_STORAGE = "WordImpact.storage_backends.StaticStorage"
+DEFAULT_FILE_STORAGE = "WordImpact.storage_backends.MediaStorage"
+
+INSTALLED_APPS += ['storages']
+
+AWS_ACCESS_KEY_ID = config("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = config("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = config("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = config("AWS_S3_REGION_NAME", "us-east-1")  # default to us-east-1 if not set
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+
+AWS_LOCATION_STATIC = "static"
+AWS_LOCATION_MEDIA = "media"
+AWS_S3_OBJECT_PARAMETERS = {
+    "CacheControl": "max-age=86400",
+}
+AWS_STATIC_LOCATION = AWS_LOCATION_STATIC
+AWS_MEDIA_LOCATION = AWS_LOCATION_MEDIA
+STATICFILES_LOCATION = AWS_STATIC_LOCATION
+MEDIAFILES_LOCATION = AWS_MEDIA_LOCATION
+STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_STATIC_LOCATION}/"
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_MEDIA_LOCATION}/"
+
+AWS_QUERYSTRING_AUTH = False  # makes URLs public (optional)
+
+# ✅ NEW: Tell Django to use S3 backends (this was the missing engine!)
+STORAGES = {
+    "default": {
+        "BACKEND": "WordImpact.storage_backends.MediaStorage"
+    },
+    "staticfiles": {
+        "BACKEND": "WordImpact.storage_backends.StaticStorage"
+    }
+}
+
+
+CSRF_TRUSTED_ORIGINS = [
+    f"http://{MAIN_DOMAIN}",
+    f"https://{MAIN_DOMAIN}",
+    f"http://*.{MAIN_DOMAIN.split(':')[0]}",
+    f"https://*.{MAIN_DOMAIN.split(':')[0]}",
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")  # used when you run collectstatic
+CSRF_FAILURE_VIEW = 'accounts.views.custom_csrf_failure'
+
+
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {  # Logs to console
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',  # Change to DEBUG if you want more verbose output
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',  # You can set this to WARNING in production
+            'propagate': False,
+        },
+        '__main__': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'storefront.middleware': {   # Add your middleware’s logger explicitly
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
 
 import os
 
