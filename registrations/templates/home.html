@@ -1,0 +1,1148 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Word Impact Conference ’25</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --ink:#1c1a1a;
+      --muted:#6e6a6a;
+      --brand:#b78491;        /* mauve/pink for CTAs */
+      --brand-ink:#ffffff;
+      --card:#f6f4f4;
+      --radius:18px;
+      --shadow:0 10px 30px rgba(0,0,0,.06);
+      --max:1200px;
+    }
+
+    /* Base */
+    html,body{height:100%}
+    body{
+      margin:0; font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink); background:var(--bg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
+    img{max-width:100%; display:block}
+
+    /* Layout helpers */
+    .container{max-width:var(--max); margin-inline:auto; padding: clamp(16px, 3vw, 32px);}
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: clamp(20px, 3vw, 36px);
+      align-items:center;
+    }
+
+    /* Header */
+    .nav{
+      display:flex; align-items:center; justify-content:space-between;
+      padding-block: 10px;
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand-logo{
+      width:42px; aspect-ratio:1; border-radius:10px; background:#000; display:grid; place-items:center; color:#fff; font-weight:800;
+    }
+    .nav-links{
+      display:flex; gap: clamp(12px, 2vw, 28px); align-items:center;
+    }
+    .nav-links a{
+      text-decoration:none; color:var(--ink); font-weight:600; opacity:.9;
+    }
+    .btn{
+      appearance:none; border:0; border-radius:999px; padding:14px 22px; font-weight:700; cursor:pointer;
+      background:var(--brand); color:var(--brand-ink); box-shadow:var(--shadow);
+      display:inline-flex; align-items:center; gap:10px; text-decoration:none;
+    }
+    .btn:hover{filter:brightness(0.96)}
+    .ghost{
+      background:#fff; color:var(--ink); border:1px solid #e9e6e6;
+    }
+
+    /* Hero */
+    .hero{
+      position:relative; isolation:isolate; overflow:hidden;
+    }
+    /* big watermark ’25 */
+    .hero::after{
+      content:"’25";
+      position:absolute; inset:auto 0 -60px 40%;
+      font-weight:900; font-size: min(42vw, 520px); line-height:.8;
+      color:#000; opacity:.035; pointer-events:none; z-index:-1;
+    }
+
+    .eyebrow{
+      font-size:.85rem; letter-spacing:.22em; font-weight:800; color:var(--muted);
+    }
+    .title{
+      font-size: clamp(36px, 6vw, 64px);
+      line-height:1.02; letter-spacing:-.02em; margin:.3em 0 .4em; font-weight:800;
+    }
+    .lead{
+      color:var(--muted); max-width:48ch; font-size: clamp(15px, 2.2vw, 18px);
+    }
+
+    .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin:26px 0}
+    .chip-row{
+      display:flex; gap:20px; flex-wrap:wrap; align-items:center; color:var(--muted);
+      font-weight:600;
+    }
+    .chip{display:inline-flex; gap:10px; align-items:center}
+
+    /* Right-side collage */
+    .media{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap:14px;
+    }
+    .media .big{
+      grid-column:1 / -1;
+      border-radius:14px; overflow:hidden; box-shadow:var(--shadow);
+    }
+    .media .small{
+      border-radius:12px; overflow:hidden; box-shadow:var(--shadow); height:160px;
+    }
+    .card-bg{
+      background:var(--card);
+      padding: clamp(14px, 2.2vw, 18px);
+      border-radius: var(--radius);
+    }
+
+    /* Two-column at >= 900px */
+    @media (min-width:900px){
+      .grid{grid-template-columns: 1.1fr .9fr}
+      .media .big{grid-column:auto}
+      .media{
+        grid-template-columns: 1fr; grid-auto-rows:auto;
+      }
+
+      .media{
+        display:grid; gap:16px;
+      }
+      /* create 1 large + 2 small in a column using nested grid */
+      .media{grid-template-rows:auto auto}
+      .media .row{
+        display:grid; grid-template-columns: 1fr 1fr; gap:14px;
+      }
+    }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion:no-preference){
+      .btn{transition: transform .15s ease, filter .15s ease}
+      .btn:active{transform: translateY(1px)}
+    }
+
+    /* Simple icon style */
+    .icon{width:18px; height:18px; display:inline-block}
+    .icon svg{width:100%; height:100%; display:block}
+
+    /* Ribbon header */
+.ribbon-wrap{
+  text-align:center; margin-bottom: clamp(18px, 4vw, 28px);
+}
+.ribbon-eyebrow{
+  display:inline-block; font-size:.78rem; letter-spacing:.32em; font-weight:800;
+  color:var(--muted); position:relative; padding-inline:14px;
+}
+.ribbon-eyebrow::before,
+.ribbon-eyebrow::after{
+  content:""; position:absolute; top:50%; width:36px; height:1px; background:#e7e3e6;
+}
+.ribbon-eyebrow::before{right:100%; margin-right:10px}
+.ribbon-eyebrow::after{left:100%; margin-left:10px}
+.ribbon-title{
+  margin:.35rem 0 0; font-size: clamp(22px, 3.6vw, 28px); letter-spacing:-.01em;
+}
+
+/* About grid (reuses earlier rules if present) */
+.section-about{padding-block: clamp(32px, 6vw, 72px)}
+.about-grid{
+  display:grid; grid-template-columns:1fr; gap: clamp(18px, 3vw, 28px);
+}
+@media (min-width:960px){
+  .about-grid{grid-template-columns:1.05fr .95fr; align-items:start}
+}
+
+.about-cards{display:grid; gap: clamp(16px, 2.4vw, 20px)}
+.about-card{
+  background:#fff; border-radius:14px; padding: clamp(16px, 2.8vw, 22px);
+  box-shadow:var(--shadow); border:1px solid rgba(183,132,145,.25); position:relative;
+}
+.about-card.intro{border-left:6px solid rgba(183,132,145,.7)}
+.about-card h3{margin:0 0 8px; font-size: clamp(18px, 2.6vw, 22px)}
+.about-card p{margin:0; color:var(--muted)}
+
+.about-poster{padding: clamp(10px, 1.6vw, 16px); border-radius:18px}
+.poster-img{border-radius:14px; width:100%; height:auto; box-shadow:var(--shadow)}
+.poster-meta{
+  display:flex; gap:14px; flex-wrap:wrap; margin-top:12px; color:var(--muted); font-weight:600;
+}
+.chip{display:inline-flex; gap:10px; align-items:center}
+.icon{width:18px; height:18px; display:inline-block}
+.icon svg{width:100%; height:100%}
+
+
+/* Status bar / countdown */
+.event-status{
+  background:#000; color:#fff; text-align:center;
+  padding:10px 15px; font-weight:700; font-size:1rem;
+}
+
+/* Expect section */
+.section-expect{padding-block: clamp(32px, 6vw, 72px)}
+.expect-grid{
+  display:grid; grid-template-columns:1fr; gap: clamp(18px, 3vw, 28px);
+}
+@media(min-width:800px){
+  .expect-grid{grid-template-columns: repeat(3, 1fr)}
+}
+
+.expect-card{
+  background:#fff; border-radius:14px; padding: clamp(16px, 2.6vw, 22px);
+  box-shadow:var(--shadow); text-align:left;
+  display:flex; flex-direction:column; align-items:flex-start;
+}
+.expect-icon{
+  width:50px; height:50px; border-radius:50%;
+  background: var(--brand); display:flex; align-items:center; justify-content:center;
+  margin-bottom:14px; overflow:hidden;
+}
+.expect-icon img{width:24px; height:24px}
+.expect-card h3{margin:0 0 10px; font-size: clamp(18px, 2.5vw, 22px)}
+.expect-card p{margin:0; color:var(--muted)}
+
+/* Countdown bar styling */
+.event-status {
+  background: #000;
+  color: #fff;
+  text-align: center;
+  padding: 14px 20px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.countdown {
+  display: flex;
+  gap: 8px;
+}
+
+.cd-box {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 8px 12px;
+  border-radius: 6px;
+  min-width: 58px;
+}
+
+.cd-number {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--brand, #b78491);
+}
+
+.cd-label {
+  display: block;
+  font-size: 0.7rem;
+  color: #ccc;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Live Stream Section ===== */
+.section-live{padding-block: clamp(36px, 7vw, 90px)}
+.live-grid{
+  display:grid; gap: clamp(22px, 4vw, 40px);
+  grid-template-columns: 1fr;
+  align-items:center;
+}
+@media (min-width: 980px){
+  .live-grid{grid-template-columns: 1.05fr .95fr}
+}
+
+.live-left .ribbon-wrap{margin-bottom: clamp(8px, 2.2vw, 14px)}
+
+.live-features{list-style:none; margin:0; padding:0; display:grid; gap:16px}
+.live-features li{display:grid; grid-template-columns: 52px 1fr; gap:14px; align-items:start}
+.feat-icon{
+  width:48px; height:48px; border-radius:50%;
+  background:#000; color:#fff; display:grid; place-items:center;
+  box-shadow: 0 2px 0 rgba(0,0,0,.2), inset 0 0 0 6px rgba(183,132,145,.25);
+}
+.feat-icon svg{width:24px; height:24px}
+.live-features h3{margin:0 0 6px; font-size: clamp(18px, 2.6vw, 22px)}
+.live-features p{margin:0; color:var(--muted)}
+
+.live-ctas{display:flex; gap:12px; flex-wrap:wrap; margin-top:18px}
+.live-btn{padding:14px 20px}
+.live-notes{
+  display:flex; gap:26px; flex-wrap:wrap; margin-top:8px; color:var(--muted);
+}
+.live-free{margin:.6rem 0 0; color:var(--muted); font-weight:600}
+
+.live-right{}
+.embed-card{
+  background:#fff; border-radius:18px; box-shadow: var(--shadow);
+  padding: clamp(8px, 1.6vw, 14px); position:relative;
+}
+.embed-16x9{position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:14px}
+.embed-16x9 iframe{position:absolute; inset:0; width:100%; height:100%}
+
+.live-badge{
+  position:absolute; right:22px; bottom:18px;
+  background:#ff4d4f; color:#fff; font-weight:800; font-size:.85rem;
+  padding:8px 12px; border-radius:999px; box-shadow: var(--shadow);
+  letter-spacing:.4px;
+}
+
+
+
+/* ===== Speakers & Ministers ===== */
+.section-speakers{padding-block: clamp(36px, 7vw, 90px)}
+.speaker-grid{
+  display:grid; gap: clamp(18px, 3vw, 26px);
+  grid-template-columns: 1fr;
+}
+@media (min-width:720px){
+  .speaker-grid{grid-template-columns: repeat(2, 1fr)}
+}
+@media (min-width:1024px){
+  .speaker-grid{grid-template-columns: repeat(4, 1fr)}
+}
+
+.speaker-card{
+  background:#fff; border-radius:16px; box-shadow: var(--shadow);
+  overflow:hidden; display:flex; flex-direction:column; height:100%;
+  border:1px solid #eee;
+}
+.speaker-media{aspect-ratio: 4/5; background:#f2f2f2}
+.speaker-media img{width:100%; height:100%; object-fit:cover}
+
+.speaker-body{padding:16px}
+.speaker-body h3{
+  margin:6px 0 6px; font-size: clamp(18px, 2.4vw, 20px); letter-spacing:-.01em;
+}
+.speaker-role{
+  margin:0 0 10px; color:var(--muted);
+  line-height:1.4;
+}
+
+.speaker-tag{
+  display:inline-block;
+  background: #f5eef1;
+  color:#4b3a41;
+  border:1px solid rgba(183,132,145,.35);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em;
+}
+.speaker-tag.host{
+  background: linear-gradient(180deg, rgba(183,132,145,.18), rgba(183,132,145,.08));
+  border-color: rgba(183,132,145,.6);
+}
+
+.speaker-social{
+  display:flex; gap:10px; margin-top:12px;
+}
+.speaker-social a{
+  width:34px; height:34px; border-radius:50%;
+  display:inline-grid; place-items:center;
+  background:#f6f4f4; border:1px solid #e9e6e6; color:#333;
+}
+.speaker-social a:hover{filter:brightness(.96)}
+.speaker-social svg{width:16px; height:16px; fill:currentColor}
+
+
+/* ===== Venue ===== */
+.section-venue{padding-block: clamp(36px, 7vw, 90px)}
+.venue-address{color:var(--muted); max-width: 80ch; margin: 8px auto 12px; text-align:center}
+.venue-actions{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin: 8px 0 18px}
+
+.embed-card{
+  background:#fff; border-radius:18px; box-shadow:var(--shadow);
+  padding: clamp(8px, 1.6vw, 14px);
+}
+.embed-16x9{position:relative; width:100%; aspect-ratio:16/9; overflow:hidden; border-radius:14px}
+.embed-16x9 iframe{position:absolute; inset:0; width:100%; height:100%}
+
+
+/* ===== Footer ===== */
+.footer{
+  background:#000; color:#fff;
+  padding-block: clamp(36px, 6vw, 60px) 0;
+}
+.footer-grid{
+  display:grid; gap: clamp(24px, 4vw, 40px);
+  grid-template-columns: 1fr;
+}
+@media(min-width:900px){
+  .footer-grid{grid-template-columns: 1.2fr 1fr 1fr}
+}
+
+.footer-about h3{
+  font-size: 1.4rem; font-weight:800; margin-bottom:8px;
+}
+.footer-about p{color:#ccc; max-width:50ch; margin:0 0 14px}
+.footer-social{display:flex; gap:10px}
+.footer-social a{
+  width:34px; height:34px; display:grid; place-items:center;
+  background:#222; border-radius:50%; color:#fff;
+}
+.footer-social a:hover{background:var(--brand)}
+
+.footer-links h4,
+.footer-newsletter h4{
+  font-weight:700; margin-bottom:6px; position:relative;
+}
+.footer-links h4::after,
+.footer-newsletter h4::after{
+  content:""; position:absolute; left:0; bottom:-4px; width:22px; height:2px; background:var(--brand);
+}
+.footer-links ul{list-style:none; padding:0; margin:0}
+.footer-links li{margin:6px 0}
+.footer-links a{text-decoration:none; color:#ccc}
+.footer-links a:hover{color:var(--brand)}
+
+.footer-newsletter p{color:#ccc; margin-bottom:10px}
+.newsletter-form{
+  display:flex; border-radius:999px; overflow:hidden;
+  border:1px solid #333; background:#fff;
+}
+.newsletter-form input{
+  border:0; padding:10px 14px; flex:1; font-size:.9rem;
+}
+.newsletter-form button{
+  border:0; background:var(--brand); color:#fff; padding:0 16px; cursor:pointer;
+  font-size:1.2rem; display:grid; place-items:center;
+}
+.newsletter-form button:hover{filter:brightness(0.95)}
+
+.footer-bottom{
+  border-top:1px solid #111; text-align:center; padding:16px 0; margin-top:30px;
+  font-size:.85rem; color:#777;
+}
+
+
+/* Sticky header */
+.site-header{
+  position: sticky; top: 0; z-index: 50; background: var(--bg);
+  box-shadow: 0 1px 0 rgba(0,0,0,.06);
+}
+
+/* Base nav layout */
+.nav{display:flex; align-items:center; justify-content:space-between; padding-block:10px}
+.brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; text-decoration:none; color:var(--ink)}
+.brand-logo{width:42px; aspect-ratio:1; border-radius:10px; background:#000; display:grid; place-items:center; color:#fff; font-weight:800}
+
+/* Desktop: show links, hide toggle */
+.nav-toggle{display:none; background:transparent; border:0; color:var(--ink); cursor:pointer}
+
+/* Mobile drawer off-canvas */
+.drawer-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter:saturate(120%) blur(2px);
+}
+.mobile-drawer{
+  position:fixed; inset:0 auto 0 0; width:min(82vw, 360px); background:#fff; box-shadow: 10px 0 30px rgba(0,0,0,.18);
+  transform: translateX(-105%); transition: transform .25s ease; display:flex; flex-direction:column; z-index:60;
+}
+.mobile-drawer.open{transform: translateX(0)}
+.drawer-head{display:flex; align-items:center; justify-content:space-between; padding:16px}
+.drawer-close{border:0; background:#f3f3f3; width:36px; height:36px; border-radius:8px; cursor:pointer}
+.drawer-links{display:flex; flex-direction:column; gap:8px; padding: 8px 16px 20px}
+.drawer-links a{padding:12px 10px; text-decoration:none; color:var(--ink); border-radius:10px}
+.drawer-links a:hover{background:#f7f7f7}
+.drawer-links .btn{margin-top:8px; display:inline-flex; justify-content:center}
+
+/* Breakpoint behavior */
+@media (max-width: 960px){
+  .nav-links{display:none}          /* hide desktop links */
+  .nav-toggle{display:inline-flex}  /* show hamburger */
+}
+
+/* Prevent body scroll when drawer is open */
+.body-lock{overflow:hidden}
+
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+ <!-- NAV -->
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="#home" aria-label="Word Impact ’25">
+      <div class="brand-logo">W</div>
+      <div>Word Impact  ’25</div>
+    </a>
+
+    <!-- Desktop links -->
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#expectations">Expectations</a>
+      <a href="#livestream">Livestream</a>
+      <a href="#contact">Contact</a>
+      <a class="btn" href="{% url 'register' %}">Register Now</a>
+    </nav>
+
+    <!-- Mobile toggle -->
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileDrawer">
+      <!-- hamburger -->
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile drawer -->
+  <div class="drawer-overlay" id="drawerOverlay" hidden></div>
+  <aside class="mobile-drawer" id="mobileDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="brand">
+        <div class="brand-logo">W</div>
+        <div>Word Impact ’25</div>
+      </div>
+      <button class="drawer-close" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="drawer-links" aria-label="Mobile">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#expectations">Expectations</a>
+      <a href="#livestream">Livestream</a>
+      <a href="#contact">Contact</a>
+      <a class="btn" href="#register">Register Now</a>
+    </nav>
+  </aside>
+</header>
+
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="grid">
+        <!-- Left copy -->
+        <div>
+          <div class="eyebrow">WORD IMPACT CONFERENCE ’25</div>
+          <h1 class="title">Ascension</h1>
+          <p class="lead">
+            Prepare for a divine encounter—three days of teaching, worship,
+            and wonders where heaven meets earth.
+          </p>
+
+          <div class="cta-row">
+            <a class="btn" href="#register" aria-label="Register now">
+              Register Now
+              <span aria-hidden="true">→</span>
+            </a>
+            <a class="btn ghost" href="#learn" aria-label="Learn more">Learn More ▾</a>
+          </div>
+
+          <div class="chip-row">
+            <span class="chip">
+              <span class="icon" aria-hidden="true">
+                <!-- calendar icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+              <span>Sept 12–14, 2025</span>
+            </span>
+
+            <span class="chip">
+              <span class="icon" aria-hidden="true">
+                <!-- pin icon -->
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+              </span>
+              <span>LAWN Hall, Karji, Kaduna</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Right media -->
+        <div class="card-bg">
+          <div class="media">
+            <div class="big">
+              <img src="{% static 'img/img14.png' %}">
+            </div>
+            <div class="row">
+              <div class="small">
+                <img src="{% static 'img/img13.png' %}"
+                     alt="Hands lifted in worship">
+              </div>
+              <div class="small">
+                <img src="{% static 'img/img3.png' %}"
+                     alt="Joyful faces smiling">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.grid -->
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ABOUT -->
+<section id="about" class="section-about">
+  <div class="container">
+    <!-- Ribbon header -->
+    <div class="ribbon-wrap" aria-hidden="true">
+      <span class="ribbon-eyebrow">SPIRITUAL JOURNEY</span>
+      <h2 class="ribbon-title">About Word Impact ’25</h2>
+    </div>
+
+    <div class="about-grid">
+      <!-- Left: intro + features -->
+      <div class="about-cards">
+        <!-- Intro (your text) -->
+        <article class="about-card intro">
+          <p style="margin-top:10px">
+            This year, God is calling us by His Spirit to a higher place of intimacy for
+            <strong>divine revelation and encounter (Revelation 4:1)</strong>—a call to move
+            beyond earthly limitations and engage Him on a deeper spiritual level.
+            <strong>An ASCENSION to Zion awaits you. The Father awaits you.</strong>
+          </p>
+        </article>
+
+        <!-- Feature 1 -->
+        <article class="about-card">
+          <h3>Deep Revelation</h3>
+          <p>
+            Three days of intense worship, teaching, and impartation as we draw from the
+            deep wells of revelation knowledge.
+          </p>
+        </article>
+
+        <!-- Feature 2 -->
+        <article class="about-card">
+          <h3>Powerful Anointing</h3>
+          <p>
+            Encounter the anointing that breaks yokes and sets captives free by the power
+            of the Holy Spirit.
+          </p>
+        </article>
+
+        <!-- Feature 3 -->
+        <article class="about-card">
+          <h3>Renowned Ministers</h3>
+          <p>
+            Seasoned ministers, transformative sessions, and life-changing encounters that
+            stir hunger for God and equip the saints.
+          </p>
+        </article>
+      </div>
+
+      <!-- Right: poster -->
+      <aside class="about-poster card-bg">
+        <img
+          src="{% static 'img/wic.png' %}"
+          alt="Word Impact ’25: The Bridegroom Cometh — Conference Poster"
+          class="poster-img"
+        />
+        <div class="poster-meta">
+          <div class="chip">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </span>
+            <span>Sept 12–14, 2025</span>
+          </div>
+          <div class="chip">
+            <span class="icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 6-9 12-9 12S3 16 3 10a9 9 0 1 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+            </span>
+            <span>LAWN Hall, Karji, Yakowa Rd, Kaduna</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- COUNTDOWN / STATUS BAR -->
+<div class="event-status" id="eventStatus">
+  <span>Loading countdown…</span>
+</div>
+
+<!-- EXPECTATIONS -->
+<section id="expectations" class="section-expect">
+  <div class="container">
+    <!-- Ribbon -->
+    <div class="ribbon-wrap">
+      <span class="ribbon-eyebrow">EXPERIENCE</span>
+      <h2 class="ribbon-title">What to Expect</h2>
+    </div>
+
+    <!-- Expectation cards -->
+   <div class="expect-grid">
+  <!-- Powerful Teaching -->
+  <article class="expect-card">
+    <div class="expect-icon">
+      <!-- Bible icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="1.8" width="24" height="24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 19.5A2.5 2.5 0 016.5 17H20M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15zM12 8v4m0 0v4m0-4h4m-4 0H8" />
+      </svg>
+    </div>
+    <h3>Powerful Teaching</h3>
+    <p>
+      Deep revelatory teachings that will transform your understanding of
+      spiritual truths and equip you for greater impact.
+    </p>
+  </article>
+
+  <!-- Divine Encounters -->
+  <article class="expect-card">
+    <div class="expect-icon">
+      <!-- Prayer icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="1.8" width="24" height="24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 17v-3a4 4 0 014-4h.5a4 4 0 014 4v3m-6-6V5a2 2 0 114 0v6m-4 0h4" />
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M5 21h14" />
+      </svg>
+    </div>
+    <h3>Divine Encounters</h3>
+    <p>
+      Experience powerful encounters with God's presence that will
+      transform your life and ignite your passion for the supernatural.
+    </p>
+  </article>
+
+  <!-- Prophetic Impartation -->
+  <article class="expect-card">
+    <div class="expect-icon">
+      <!-- Hands icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+           stroke="currentColor" stroke-width="1.8" width="24" height="24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 15s1-1 4-1 4 1 4 1 1-1 4-1 4 1 4 1m-4-6a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    </div>
+    <h3>Prophetic Impartation</h3>
+    <p>
+      Receive personal prophetic words and impartations that align you with
+      your divine destiny and purpose.
+    </p>
+  </article>
+</div>
+
+  </div>
+</section>
+
+
+<!-- LIVESTREAM -->
+<section id="livestream" class="section-live">
+  <div class="container live-grid">
+    <!-- Left: copy + features + CTAs -->
+    <div class="live-left">
+      <div class="ribbon-wrap">
+        <span class="ribbon-eyebrow">JOIN REMOTELY</span>
+        <h2 class="ribbon-title">Live Stream Experience</h2>
+      </div>
+
+      <ul class="live-features">
+        <li>
+          <span class="feat-icon" aria-hidden="true">
+            <!-- camera icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="7" width="13" height="10" rx="2"></rect>
+              <polygon points="16,9 21,7 21,17 16,15"></polygon>
+            </svg>
+          </span>
+          <div>
+            <h3>High-Quality Stream</h3>
+            <p>Crystal-clear HD streaming of all sessions and keynotes.</p>
+          </div>
+        </li>
+
+        <li>
+          <span class="feat-icon" aria-hidden="true">
+            <!-- chat icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a4 4 0 0 1-4 4H7l-4 4V5a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/>
+            </svg>
+          </span>
+          <div>
+            <h3>Live Interaction</h3>
+            <p>Engage with speakers and attendees through live Q&amp;A.</p>
+          </div>
+        </li>
+
+        <li>
+          <span class="feat-icon" aria-hidden="true">
+            <!-- clock icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <polyline points="12,7 12,12 16,14"></polyline>
+            </svg>
+          </span>
+          <div>
+            <h3>On-Demand Access</h3>
+            <p>Watch recordings of all sessions at your convenience.</p>
+          </div>
+        </li>
+      </ul>
+
+      <div class="live-ctas">
+        <a class="btn live-btn" href="#video-stream" aria-label="Open video live stream">VIDEO LIVE STREAM →</a>
+        <a class="btn ghost live-btn" href="#audio-stream" aria-label="Open audio-only live stream">AUDIO LIVE STREAM →</a>
+      </div>
+
+      <div class="live-notes">
+        <small>HD quality with full visuals</small>
+        <small>Lightweight audio-only option</small>
+      </div>
+      <p class="live-free">Free access for all registered attendees</p>
+    </div>
+
+    <!-- Right: embed -->
+    <div class="live-right">
+      <div class="embed-card">
+        <div class="live-badge">LIVE NOW</div>
+        <!-- Replace YOUTUBE_ID with your actual id -->
+        <div class="embed-16x9">
+          <iframe
+            src="https://www.youtube.com/embed/YOUTUBE_ID"
+            title="Word Impact Conference — Live"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SPEAKERS -->
+<section id="speakers" class="section-speakers">
+  <div class="container">
+    <div class="ribbon-wrap">
+      <span class="ribbon-eyebrow">MEET THE</span>
+      <h2 class="ribbon-title">Speakers &amp; Ministers</h2>
+    </div>
+
+    <div class="speaker-grid">
+      <!-- Speaker card -->
+   
+
+      <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img11.jpg' %}" alt="Pastor jude Micha ">
+        </div>
+        <div class="speaker-body">
+          <h3>Pastor Jude Micah </h3>
+          <p class="speaker-role"> Layers of Truth </p>
+          <span class="speaker-tag">Convener</span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="Instagram" href="#"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2zM12 9a3 3 0 110 6 3 3 0 010-6z"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+         <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img6.png' %}" alt="Pastor Doyin Akerele">
+        </div>
+        <div class="speaker-body">
+          <h3>Pastor Doyin Akerele</h3>
+          <p class="speaker-role">Head Steward, Layers of Truth</p>
+          <span class="speaker-tag host">Preacher</span>
+          <div class="speaker-social">
+            <a aria-label="Twitter" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="LinkedIn" href="#"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3zM9 8.98h3.8v1.64h.05c.53-.95 1.83-1.96 3.77-1.96 4.03 0 4.77 2.65 4.77 6.09v6.23h-4v-5.53c0-1.32-.02-3.02-1.84-3.02-1.85 0-2.13 1.44-2.13 2.93v5.62H9z"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img7.jpg' %}" alt="Minister JOE">
+        </div>
+        <div class="speaker-body">
+          <h3>Minister JOE</h3>
+          <p class="speaker-role">Layers Of truth </p>
+          <span class="speaker-tag">Minister </span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="LinkedIn" href="#"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3zM9 8.98h3.8v1.64h.05c.53-.95 1.83-1.96 3.77-1.96 4.03 0 4.77 2.65 4.77 6.09v6.23h-4v-5.53c0-1.32-.02-3.02-1.84-3.02-1.85 0-2.13 1.44-2.13 2.93v5.62H9z"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img12.jpg' %}" alt="Minister Fadekemi">
+        </div>
+        <div class="speaker-body">
+          <h3>Minister Fadekemi</h3>
+          <p class="speaker-role">Layers Of truth </p>
+          <span class="speaker-tag">Minister </span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="LinkedIn" href="#"><svg viewBox="0 0 24 24"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4v12H3zM9 8.98h3.8v1.64h.05c.53-.95 1.83-1.96 3.77-1.96 4.03 0 4.77 2.65 4.77 6.09v6.23h-4v-5.53c0-1.32-.02-3.02-1.84-3.02-1.85 0-2.13 1.44-2.13 2.93v5.62H9z"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img10.JPG' %}" alt="Pastor ">
+        </div>
+        <div class="speaker-body">
+          <h3>Pastor Benjamin Maji</h3>
+          <p class="speaker-role">Head Steward, The Fellowship</p>
+          <span class="speaker-tag">Preacher</span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="Instagram" href="#"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2zM12 9a3 3 0 110 6 3 3 0 010-6z"/></svg></a>
+          </div>
+        </div>
+         </article>
+
+        <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img8.jpg' %}" alt="Pastor ">
+        </div>
+        <div class="speaker-body">
+          <h3>Min Timi Sax </h3>
+          <p class="speaker-role"> </p>
+          <span class="speaker-tag">Music Minister</span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="Instagram" href="#"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2zM12 9a3 3 0 110 6 3 3 0 010-6z"/></svg></a>
+          </div>
+        </div>
+      </article>
+      </article>
+
+        <article class="speaker-card">
+        <div class="speaker-media">
+          <img src="{% static 'img/img9.jpg' %}" alt="Pastor ">
+        </div>
+        <div class="speaker-body">
+          <h3>Min Bishop praise </h3>
+          <p class="speaker-role"> </p>
+          <span class="speaker-tag">Music Minister</span>
+          <div class="speaker-social">
+            <a aria-label="X" href="#"><svg viewBox="0 0 24 24"><path d="M18.2 5.3l-6.8 8.8 4.7 4.6H12L5.8 12 2 5.3h4.1l3.1 5.9 4.6-5.9h4.4z"/></svg></a>
+            <a aria-label="Instagram" href="#"><svg viewBox="0 0 24 24"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5zm5 5a5 5 0 100 10 5 5 0 000-10zm6-1a1 1 0 100 2 1 1 0 000-2zM12 9a3 3 0 110 6 3 3 0 010-6z"/></svg></a>
+          </div>
+        </div>
+      </article>
+
+
+      <!-- Duplicate <article> blocks for more speakers -->
+    </div>
+  </div>
+</section>
+
+
+<!-- VENUE -->
+<section id="venue" class="section-venue">
+  <div class="container">
+    <div class="ribbon-wrap">
+      <span class="ribbon-eyebrow">LOCATION</span>
+      <h2 class="ribbon-title">Venue Location</h2>
+    </div>
+
+    <p class="venue-address" id="venueAddress">
+      📍 <strong>Legal Awareness of Nigerian Women Hall</strong> — Plot 5, Gospel Edori Street,
+      opposite Edijen by Water Intake Junction, Karji, Yakowa Road, Kaduna.
+    </p>
+
+    <div class="venue-actions">
+      <a class="btn" target="_blank"
+         href="https://www.google.com/maps?q=Legal%20Awareness%20of%20Nigerian%20Women%20Hall%2C%20Plot%205%2C%20Gospel%20Edori%20Street%2C%20opposite%20Edijen%20by%20Water%20Intake%20Junction%2C%20Karji%2C%20Yakowa%20Road%2C%20Kaduna">
+        Open in Google Maps →
+      </a>
+      <button class="btn ghost" id="copyVenueBtn">Copy Address</button>
+    </div>
+
+    <div class="embed-card">
+      <div class="embed-16x9">
+        <iframe
+          title="Venue map – Legal Awareness of Nigerian Women Hall"
+          loading="lazy"
+          allowfullscreen
+          referrerpolicy="no-referrer-when-downgrade"
+          src="https://www.google.com/maps?q=Legal%20Awareness%20of%20Nigerian%20Women%20Hall%2C%20Plot%205%2C%20Gospel%20Edori%20Street%2C%20opposite%20Edijen%20by%20Water%20Intake%20Junction%2C%20Karji%2C%20Yakowa%20Road%2C%20Kaduna&output=embed">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <!-- Left: About -->
+    <div class="footer-about">
+      <h3>Word Impact ’25</h3>
+      <p>
+        Divine revelation and encounter (Revelation 4:1)</strong>—a call to move
+        beyond earthly limitations and engage Him on a deeper spiritual level.
+        <strong>An ASCENSION to Zion awaits you. The Father awaits you.</strong>
+      </p>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Middle: Quick Links -->
+    <div class="footer-links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#expectations">Experience</a></li>
+        <li><a href="#speakers">Speakers</a></li>
+        <li><a href="#register">Register</a></li>
+      </ul>
+    </div>
+
+    <!-- Right: Newsletter -->
+    <div class="footer-newsletter">
+      <h4>Stay Updated</h4>
+      <p>Subscribe to receive conference updates and spiritual insights.</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Your Email" required>
+        <button type="submit">→</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Word Impact Conference. All Rights Reserved.</p>
+  </div>
+</footer>
+
+
+
+<script>
+(function(){
+  // Local time: Sept = month index 8 (0-based)
+  const eventTime = new Date(2025, 8, 12, 0, 0, 0).getTime(); // 2025-09-12 00:00:00 (local)
+  const el = document.getElementById('eventStatus');
+
+  function fmt(n){ return n.toString().padStart(2, '0'); }
+
+  function update() {
+    const now = Date.now();
+    const diff = eventTime - now;
+
+    if (diff <= 0) {
+      el.innerHTML = '<span>The Event Has Started!</span>';
+      clearInterval(timer);
+      return;
+    }
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    el.innerHTML = `<span>Starts in ${d}d ${fmt(h)}h ${fmt(m)}m ${fmt(s)}s</span>`;
+  }
+
+  // Run immediately, then every second
+  update();
+  const timer = setInterval(update, 1000);
+})();
+</script>
+
+<script>
+document.getElementById('copyVenueBtn')?.addEventListener('click', async () => {
+  const text = document.getElementById('venueAddress').innerText.replace(/^📍\s*/, '');
+  try{
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById('copyVenueBtn');
+    const old = btn.textContent;
+    btn.textContent = 'Copied!';
+    setTimeout(()=> btn.textContent = old, 1200);
+  }catch(e){ alert('Could not copy.'); }
+});
+</script>
+
+
+<script>
+(function(){
+  const toggle = document.querySelector('.nav-toggle');
+  const drawer = document.getElementById('mobileDrawer');
+  const overlay = document.getElementById('drawerOverlay');
+  const closeBtn = document.querySelector('.drawer-close');
+
+  function openDrawer(){
+    drawer.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    overlay.hidden = false;
+    toggle.setAttribute('aria-expanded','true');
+    document.body.classList.add('body-lock');
+    // focus first link for accessibility
+    const firstLink = drawer.querySelector('a');
+    firstLink && firstLink.focus();
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    overlay.hidden = true;
+    toggle.setAttribute('aria-expanded','false');
+    document.body.classList.remove('body-lock');
+    toggle.focus();
+  }
+
+  toggle.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+
+  // Close on ESC
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer(); });
+
+  // Close after clicking a link
+  drawer.addEventListener('click', (e)=>{
+    if(e.target.tagName === 'A') closeDrawer();
+  });
+})();
+</script>
+
+
+</body>
+</html>
