@@ -18,7 +18,7 @@ from decouple import config, Csv
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 MAIN_DOMAIN = config('MAIN_DOMAIN')
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv(), default='localhost,127.0.0.1')
 DEFAULT_SCHEME = config("DEFAULT_SCHEME", "http" if DEBUG else "https")
 SITE_BASE_URL = f"{DEFAULT_SCHEME}://{MAIN_DOMAIN}"
 
@@ -36,7 +36,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&07+@hosv0=j#y3p^k^t_61w1h_awfj(t&)h(9646wx@&=#fqq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = ["*"]  # dev only
 
 
 # Application definition
