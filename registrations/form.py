@@ -13,7 +13,8 @@ class RegistrationForm(forms.ModelForm):
             "phone",
             "attendance",
             "church",
-            "city"
+            "city",
+            "expectation"
         ]
         widgets = {
             "first_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "First Name"}),
@@ -23,4 +24,6 @@ class RegistrationForm(forms.ModelForm):
             "attendance": forms.Select(attrs={"class": "form-select"}),
             "church": forms.TextInput(attrs={"class": "form-control", "placeholder": "Church Name"}),
             "city": forms.TextInput(attrs={"class": "form-control", "placeholder": "City"}),
+            "expectation": forms.Textarea(attrs={"class": "form-control", "placeholder": "Your Expectations", "rows": 3}),
         }
+

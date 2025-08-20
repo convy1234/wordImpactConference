@@ -23,6 +23,12 @@ class Registration(models.Model):
     church = models.CharField(max_length=120, blank=True)
     city = models.CharField(max_length=80, blank=True)
 
+    expectation = models.TextField(
+        blank=True,
+        null=True,
+        help_text="What do you hope to gain from this event?"
+    )
+
     consent = models.BooleanField(default=False)  # e.g. for data/privacy consent
     created_at = models.DateTimeField(auto_now_add=True)
 

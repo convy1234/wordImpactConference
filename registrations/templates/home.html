@@ -94,24 +94,49 @@
     .chip{display:inline-flex; gap:10px; align-items:center}
 
     /* Right-side collage */
-    .media{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: auto auto;
-      gap:14px;
-    }
-    .media .big{
-      grid-column:1 / -1;
-      border-radius:14px; overflow:hidden; box-shadow:var(--shadow);
-    }
-    .media .small{
-      border-radius:12px; overflow:hidden; box-shadow:var(--shadow); height:160px;
-    }
-    .card-bg{
-      background:var(--card);
-      padding: clamp(14px, 2.2vw, 18px);
-      border-radius: var(--radius);
-    }
+.media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 14px;
+}
+
+.media .big {
+  grid-column: 1 / -1;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.media .small {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  height: 160px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .media {
+    grid-template-columns: 1fr; /* single column */
+    grid-template-rows: auto;
+    gap: 14px; /* this adds space between ALL items including small images */
+
+  }
+
+  .media .small {
+    height: auto;       /* allow proportional height */
+    width: 100%;        /* full width of container */
+  }
+
+  .media .big {
+    height: auto;
+    width: 100%;
+  }
+  .small{
+    padding-bottom: 1rem;
+  }
+}
 
     /* Two-column at >= 900px */
     @media (min-width:900px){
@@ -493,7 +518,7 @@
       <a href="#about">About</a>
       <a href="#expectations">Expectations</a>
       <a href="#livestream">Livestream</a>
-      <a href="#contact">Contact</a>
+      <a href="#venue">Contact</a>
       <a class="btn" href="{% url 'register' %}">Register Now</a>
     </nav>
 
@@ -523,8 +548,8 @@
       <a href="#about">About</a>
       <a href="#expectations">Expectations</a>
       <a href="#livestream">Livestream</a>
-      <a href="#contact">Contact</a>
-      <a class="btn" href="#register">Register Now</a>
+      <a href="#venue">Contact</a>
+      <a class="btn" href="{% url 'register' %}">Register Now</a>
     </nav>
   </aside>
 </header>
@@ -544,11 +569,11 @@
           </p>
 
           <div class="cta-row">
-            <a class="btn" href="#register" aria-label="Register now">
+            <a class="btn" href="{% url 'register' %}" aria-label="Register now">
               Register Now
               <span aria-hidden="true">→</span>
             </a>
-            <a class="btn ghost" href="#learn" aria-label="Learn more">Learn More ▾</a>
+            <a class="btn ghost" href="#about" aria-label="Learn more">Learn More ▾</a>
           </div>
 
           <div class="chip-row">
@@ -859,7 +884,7 @@
 
       <article class="speaker-card">
         <div class="speaker-media">
-          <img src="{% static 'img/img11.jpg' %}" alt="Pastor jude Micha ">
+          <img src="{% static 'img/img11.JPG' %}" alt="Pastor jude Micha ">
         </div>
         <div class="speaker-body">
           <h3>Pastor Jude Micah </h3>
@@ -889,7 +914,7 @@
 
       <article class="speaker-card">
         <div class="speaker-media">
-          <img src="{% static 'img/img7.jpg' %}" alt="Minister JOE">
+          <img src="{% static 'img/img7.JPG' %}" alt="Minister JOE">
         </div>
         <div class="speaker-body">
           <h3>Minister JOE</h3>
