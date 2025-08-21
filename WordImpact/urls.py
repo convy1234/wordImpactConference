@@ -22,7 +22,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
-from registrations.views import register,registration_success
+from registrations.views import dashboard, dashboard_login, register,registration_success
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -30,6 +30,8 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("register/", register, name="register"),
     path("registration-success/",registration_success, name="registration_success"),
+    path("dashboard/", dashboard, name="dashboard"),
+    path("dashboard-login/", dashboard_login, name="dashboard_login"),
 
 ]
 
