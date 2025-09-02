@@ -30,6 +30,8 @@ def dashboard_login(request):
             return redirect("dashboard")
     return render(request, "dashboard_login.html")
 
+from django.db.models import Q
+from django.core.paginator import Paginator
 
 def dashboard(request):
     if not request.session.get("is_admin"):
@@ -45,11 +47,9 @@ def dashboard(request):
     # search by name or email
     if search_query:
         people = people.filter(
-            first_name__icontains=search_query
-        ) | people.filter(
-            last_name__icontains=search_query
-        ) | people.filter(
-            email__icontains=search_query
+            Q(first_name__icontains=search_query) |
+            Q(last_name__icontains=search_query) |
+            Q(email__icontains=search_query)
         )
 
     # filter by gender
